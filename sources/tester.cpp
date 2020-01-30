@@ -28,7 +28,6 @@ int main(int, char**) {
       return 1;
    }
 
-   size_t test_number{1};
    for (const auto& p: fs::directory_iterator(test_dir_path)) {
 
       if (p.path().extension() == in_ext) {
@@ -50,13 +49,11 @@ int main(int, char**) {
          out >> expected;
 
          if (candidate == expected) {
-            std::cout << "test" << test_number << " passed\n";
+            std::cout << p.path().filename().string() << " passed\n";
          } else {
-            std::cout << "test" << test_number << " failed. expected: " << expected << ", got: " << candidate << '\n';
+            std::cout << p.path().filename().string() << " failed. expected: " << expected << ", got: " << candidate << '\n';
          }
-         ++test_number;
       }
-
    }
    return 0;
 }
