@@ -20,6 +20,16 @@ constexpr auto in_ext  = ".in";
 constexpr auto out_ext = ".out";
 
 // ------------------------------------------------------------------
+void color_print(const char* str, bool as_red = false) {
+   constexpr auto esc = "\x1b";
+   constexpr auto red = "[31m";
+   constexpr auto green = "[32m";
+   constexpr auto old_color = "[0m";
+
+   std::printf("%s%s%s%s%s", esc, as_red ? red : green, str, esc, old_color);
+}
+
+// ------------------------------------------------------------------
 int main(int, char**) {
    const auto test_dir_path = fs::current_path() / test_dir_name;
 
@@ -49,9 +59,16 @@ int main(int, char**) {
          out >> expected;
 
          if (candidate == expected) {
-            std::cout << p.path().filename().string() << " passed\n";
+            const auto str = p.path().filename().string().append(" passed.\n");
+            color_print(str.c_str());
          } else {
-            std::cout << p.path().filename().string() << " failed. expected: " << expected << ", got: " << candidate << '\n';
+            const auto str = p.path().filename().string()
+                             .append(" failed. expected: ")
+                             .append(expected)
+                             .append(", got: ")
+                             .append(candidate)
+                             .append("\n");
+            color_print(str.c_str(), true);
          }
       }
    }
