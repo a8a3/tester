@@ -4,7 +4,8 @@
 #include <fstream>
 #include <iostream>
 
-#include "string_len.hpp"
+#include <string_len.hpp>
+#include <timer.hpp>
 
 namespace fs = std::filesystem;
 
@@ -26,7 +27,7 @@ void color_print(const char* str, bool as_red = false) {
    constexpr auto green = "[32m";
    constexpr auto old_color = "[0m";
 
-   std::printf("%s%s%s%s%s", esc, as_red ? red : green, str, esc, old_color);
+   std::fprintf(stderr, "%s%s%s%s%s", esc, as_red ? red : green, str, esc, old_color);
 }
 
 // ------------------------------------------------------------------
@@ -53,7 +54,10 @@ int main(int, char**) {
 
          str_len_test slt;
          in >> slt;
+
+         timer t{"string length test"};
          const auto candidate = slt.run();
+         t.check();
 
          std::string expected;
          out >> expected;
